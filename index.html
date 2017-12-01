@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telphone=no, email=no, address=no">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/swiper.min.css">
+    <link rel="stylesheet" href="fonts/iconfont.css">
+</head>
+<body>
+    <div class="box">
+        <header>
+            <img src="images/logo_ue2.png" alt="">
+            <a href="#">
+                <i class='icon iconfont icon-fangdajing'></i>
+                <i class='icon iconfont icon-gengduo-2'></i>
+            </a>
+        </header>
+        <div class="swiper-container banner">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <img src="images/banner1.jpg" alt="">
+                </div>
+                <div class="swiper-slide">
+                    <img src="images/banner2.jpg" alt="">
+                </div>
+                <div class="swiper-slide">
+                    <img src="images/banner3.jpg" alt="">
+                </div>
+                <div class="swiper-slide">
+                    <img src="images/banner4.jpg" alt="">
+                </div>
+                <div class="swiper-slide">
+                    <img src="images/banner5.jpg" alt="">
+                </div>
+                <div class="swiper-slide">
+                    <img src="images/banner6.jpg" alt="">
+                </div>
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+        <h2>
+            <p>
+               <i class='icon iconfont icon icon-meiyoudingdan-01'></i>
+               <span>中国农业银行博士后科研工作站</span>
+            </p>
+        </h2>
+        <h2>
+            <p>
+               <i class='icon iconfont icon icon-meiyoudingdan-01'></i>
+               <span>中国农业银行博士后科研工作站</span>
+            </p>
+        </h2>
+        <div class="content">
+            <h3>便携服务</h3>
+        </div>
+    </div>
+    <script src='js/jquery.min.js'></script>
+    <script src='js/swiper.min.js'></script>
+    <script>
+        var bannerSwiper = new Swiper('.banner', {
+            autoplay: 1200,
+            loop: true,
+            pagination: '.swiper-pagination'
+        })
+
+       function ajax(obj,sucCallback,errCallback){
+           var xml=null;
+           if(window.XMLHttpRequest){
+               xml=new XMLHttpRequest();
+           }else{
+               xml=ActiveXObject('Microsoft.XMLHTTP')
+           }
+           xml.onreadystatechange=function(){
+               if(xml.readyState!==4){//状态不为4直接返回 下面不执行函数
+                   return;
+               }
+               if(xml.status==200){
+                    sucCallback(this.response);//成功传递这个类型
+               }else{
+                    errCallback(this.responseText);//失败输出文本信息
+               } 
+           }
+           xml.open(obj['method'],obj['url'],true);
+           xml.send(null);
+       }
+        //调用ajax
+       ajax({
+           url:'http://localhost:8090/abChina',
+           method:'get',
+        },function(result){
+            getData(JSON.parse(result));
+        },function(err){
+            console.log(err)
+        });
+        //渲染数据
+        function getData(data) {
+            var str = ''
+
+            str += '<nav><ul>'
+            for (var i in data) {
+                str += `<li><img src='images/icon_${i*1+1}.png'><span>${data[i]['name']}</span></li> `
+            }
+            str += '</ul></nav>'
+            $('.content').append(str)
+        }
+    </script>
+</body>
+</html>
